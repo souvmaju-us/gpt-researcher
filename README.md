@@ -60,8 +60,10 @@ $ cd gpt-researcher
 
 <br />
 
-> **Step 2** - Install dependencies
+> **Step 2** - Install dependencies in a venv
 ```bash
+$ python -m venv ${venv_name}
+$ source ./${venv_name}/bin/activate
 $ pip install -r requirements.txt
 ```
 <br />
@@ -87,6 +89,7 @@ $ uvicorn main:app --reload
 > **Step 5** - Go to http://localhost:8000 on any browser and enjoy researching!
 
 - **update:** if you are having issues with weasyprint, please visit their website and follow the installation instructions: https://doc.courtbouillon.org/weasyprint/stable/first_steps.html
+- The issue might be related to `pango`. In that case on a macos just install it with `brew install pango`
 
 ## Try it with Docker
 
