@@ -5,7 +5,7 @@ from typing import List, Dict
 from fastapi import WebSocket
 from config import check_openai_api_key
 from agent.research_agent import ResearchAgent
-
+import logging
 
 class WebSocketManager:
     def __init__(self):
@@ -46,6 +46,7 @@ async def run_agent(task, report_type, agent, agent_role_prompt, websocket):
 
     # await websocket.send_json({"type": "logs", "output": f"Start time: {str(start_time)}\n\n"})
 
+    
     assistant = ResearchAgent(task, agent, agent_role_prompt, websocket)
     await assistant.conduct_research()
 

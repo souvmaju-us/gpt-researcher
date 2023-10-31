@@ -7,7 +7,7 @@ import os
 
 from agent.llm_utils import choose_agent
 from agent.run import WebSocketManager
-
+import logging
 
 class ResearchRequest(BaseModel):
     task: str
@@ -42,6 +42,7 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             data = await websocket.receive_text()
+            logging.info(f"[app.websocket] {data}")
             if data.startswith("start"):
                 json_data = json.loads(data[6:])
                 task = json_data.get("task")

@@ -16,6 +16,9 @@ from config import Config
 CFG = Config()
 
 openai.api_key = CFG.openai_api_key
+openai.api_base = CFG.openai_api_base
+openai.api_version = CFG.openai_api_version
+openai.api_type = CFG.openai_api_type
 
 from typing import Optional
 import logging
@@ -62,12 +65,14 @@ def send_chat_completion_request(
     messages, model, temperature, max_tokens, stream, websocket
 ):
     if not stream:
-        result = lc_openai.ChatCompletion.create(
-            model=model, # Change model here to use different models
+        # 
+        result = openai.ChatCompletion.create(
+            engine=model,   # Azure OpenAI
+            # model=model, # Change model here to use different models
             messages=messages,
             temperature=temperature,
             max_tokens=max_tokens,
-            provider=CFG.llm_provider, # Change provider here to use a different API
+            # provider=CFG.llm_provider, # Change provider here to use a different API
         )
         return result["choices"][0]["message"]["content"]
     else:
@@ -79,15 +84,17 @@ async def stream_response(model, messages, temperature, max_tokens, websocket):
     response = ""
     print(f"streaming response...")
 
-    for chunk in lc_openai.ChatCompletion.create(
-            model=model,
+    # for chunk in lc_openai.ChatCompletion.create(
+    for chunk in openai.ChatCompletion.create(
+            engine=model,  # Azure
+            # model=model,
             messages=messages,
             temperature=temperature,
             max_tokens=max_tokens,
-            provider=CFG.llm_provider,
+            # provider=CFG.llm_provider,
             stream=True,
     ):
-        content = chunk["choices"][0].get("delta", {}).get("content")
+        content = chunk["choices"][0].get("delta", {}).get("content") if chunk["choices"] else None
         if content is not None:
             response += content
             paragraph += content
