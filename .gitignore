@@ -6,3 +6,7 @@ env/
 outputs/
 #Ignore pycache
 **/__pycache__/
+
+**/*venv/
+client/.DS_Store
+.DS_Store
